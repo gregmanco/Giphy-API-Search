@@ -7,21 +7,30 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 <link rel="stylesheet" href="style.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <title>Poke`mon Gif Search</title>
 </head>
 
 <body>
-        <h1> Gotta Gif`Em All</h1>
+        <h1 class="text-center"> Gotta Gif`Em All</h1>
 
         <button data-pokemon="Electabuzz">Electabuzz</button>
 
-        <button data-pokemon="Squirtle">Squirtle </button>
+        <button data-pokemon="Squirtle">Squirtle</button>
       
-        <button data-pokemon="Zapdos"> Zapdos </button>
+        <button data-pokemon="Zapdos">Zapdos</button>
 
-        <button data-pokemon="Golem"> Golem</button>
+        <button data-pokemon="Golem">Golem</button>
 
-        <button data-pokemon="Gengar"> Gengar </button>
+        <button data-pokemon="Gengar">Gengar</button>
+
+        <button data-pokemon="Dratini">Dratini</button>
+
+        <button data-pokemon="Psyduck">Psyduck</button>
+
+        <button data-pokemon="Khangiskhan">Khangiskhan</button>
+
+        <button data-pokemon="Scyther">Scyther</button>
 
         <div class="container">
             <div class="row">
@@ -30,25 +39,46 @@
                 </div>
 
                 <div class="col-lg-3 userPokeContainer">
+                        <input type="text" id="search-box">
+                        <button class="btn-center" id="pokeSearch" placeholder="Search Database" name="searchkey" aria-required="true">SEARCH</button>
 
                 </div>
 
-
-
-
             </div>
-
-
-
-
-
-
-
-
-
-
         </div>
 
+        <script>
+
+  
+ $(document).ready(function () {
+    // Event listener for all button elements
+    $("#pokeSearch").on("click", function(pokemonSearch) {
+        var searchParam = $("#search-box").val().trim();
+    console.log(searchParam);
+      // In this case, the "this" keyword refers to the button that was clicked
+      var pokemon = $(this).attr("data-pokemon");
+
+      // Constructing a URL to search Giphy for the name of the person who said the quote
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        pokemon + "&api_key=MNvG1xFRqYPAHUTaK0qFywaDtmDBCBL6limit=10";
+
+      // Performing our AJAX GET request
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        // After the data comes back from the API
+       .then(function(response) {
+            console.log(response)
+
+
+   //         var result = response.data
+   //         console.log("response data" + response.data)
+        });
+    });
+});
+
+            </script>
 
 
 
@@ -68,7 +98,9 @@
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
+
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
