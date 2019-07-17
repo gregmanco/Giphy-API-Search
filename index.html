@@ -1,87 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
-<link rel="stylesheet" href="style.css">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<title>Poke`mon Gif Search</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+  <!-- <link rel="stylesheet" href=""> -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <title>Poke`mon Gif Search</title>
 </head>
 
 <body>
-        <h1 class="text-center"> Gotta Gif`Em All</h1>
+  <h1 class="text-center"> Gotta Gif`Em All</h1>
+  <!-- Pokemon from array will appears here in button form-->
+  <div id="poke-buttons"></div>
 
-        <button data-pokemon="Electabuzz">Electabuzz</button>
 
-        <button data-pokemon="Squirtle">Squirtle</button>
-      
-        <button data-pokemon="Zapdos">Zapdos</button>
+  <div class="container">
+    <br>
+    <div class="row">
+      <!-- Column for Pokemon Giffs to Prepend to-->
+      <div class="col-lg-9" id="gifContainer">
 
-        <button data-pokemon="Golem">Golem</button>
+      </div>
+      <!-- Button that will search-->
+      <div class="col-lg-3 searchingPokeContainer">
 
-        <button data-pokemon="Gengar">Gengar</button>
+        <div id="pokebuttons">
+          <form id="pokemon-input">
 
-        <button data-pokemon="Dratini">Dratini</button>
+            <input type="text" id="pokemon-input">
+            <!-- Button triggers New Pokemon to be added -->
+            <input id="add-pokemon" type="submit" value="Add New Pokemon">
+          </form>
 
-        <button data-pokemon="Psyduck">Psyduck</button>
-
-        <button data-pokemon="Khangiskhan">Khangiskhan</button>
-
-        <button data-pokemon="Scyther">Scyther</button>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-9 gifContainer">
-
-                </div>
-
-                <div class="col-lg-3 userPokeContainer">
-                        <input type="text" id="search-box">
-                        <button class="btn-center" id="pokeSearch" placeholder="Search Database" name="searchkey" aria-required="true">SEARCH</button>
-
-                </div>
-
-            </div>
         </div>
 
-        <script>
-
-  
- $(document).ready(function () {
-    // Event listener for all button elements
-    $("#pokeSearch").on("click", function(pokemonSearch) {
-        var searchParam = $("#search-box").val().trim();
-    console.log(searchParam);
-      // In this case, the "this" keyword refers to the button that was clicked
-      var pokemon = $(this).attr("data-pokemon");
-
-      // Constructing a URL to search Giphy for the name of the person who said the quote
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        pokemon + "&api_key=MNvG1xFRqYPAHUTaK0qFywaDtmDBCBL6limit=10";
-
-      // Performing our AJAX GET request
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      })
-        // After the data comes back from the API
-       .then(function(response) {
-            console.log(response)
+      </div>
+    </div>
+  </div>
 
 
-   //         var result = response.data
-   //         console.log("response data" + response.data)
-        });
-    });
-});
+  <script>
+    $(document).ready(function () {
 
-            </script>
+          var pokemons = ["Electabuzz", "Squirtle", "Zapdos", "Golem", "Gengar", "Dratini", "Psyduck","Scyther"]
 
 
 
+          function displayPokemon() {
+             var pokemon = $(this).attr("data-name")
+            // Constructing a URL to search Giphy for the name of the person who said the quote
+            var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&q=" + pokemon + "&limit=10";
+
+            // Performing our AJAX GET request
+            $.ajax({
+                url: queryURL,
+                method: "GET",
+              })
+              // After the data comes back from the API
+              .then(function (response) {
+                console.log(response)
+                // $("#giftcontainer").text(JSON.stringify(response));
+                console.log(response.data[0].rating)
+                console.log(response.data[0].bitly_gif_url)
+
+                // Creating a div to hold the pokemon gif
+                var pokeGifDiV = $("<div class='pokeGif'>");
+
+                // Storing the gif rating data
+                var rating = response.data[0].rating
+
+                // Creating an element to have the rating displayed
+                var pOne = $("<p>").text("Rating: " + rating);
+
+                // Displaying the rating
+                pokeGifDiV.append(pOne);
+
+                // Retrieving the URL for the image
+               var gifURL = response.data[0].bitly_gif_url;
+
+                // Creating an element to hold the image
+                var image = $("<img>").attr("src", gifURL);
+
+                // Appending the image
+                pokeGifDiV.append(image);
+
+                // Putting the entire movie above the previous movies
+                $("#gifContainer").prepend(pokeGifDiV);
 
 
 
@@ -91,17 +101,55 @@
 
 
 
+         });
+       }
 
+          function renderButtons() {
 
+            // Deleting the buttons prior to adding new movies
+            // (this is necessary otherwise you will have repeat buttons)
+            $("#poke-buttons").empty();
 
+            // Loop through the pokemons array
+            for (var i = 0; i < pokemons.length; i++) {
 
+              // Generates a button for each item in the pokemon array
 
+              var j = $("<button>");
+              // Adding a pokemon class
+              j.addClass("pokemon");
+              // Adding a data-attribute
+              j.attr("data-name", pokemons[i]);
 
+              j.text(pokemons[i]);
+              
+              // Adding the buttons to the poke-buttons div
+              $("#poke-buttons").append(j);
 
+            }
+          };
 
+          // This function handles events where one button is clicked
+          $("#add-pokemon").on("click", function (event) {
+            event.preventDefault();
 
+            // This line grabs the input from the textbox
+            var pokemon = $("#pokemon-input").val().trim();
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            // Adding the pokemon from the textbox to our array
+            pokemons.push(pokemon);
+            console.log(pokemons);
+
+            // Calling renderButtons which handles the processing of our pokemons array
+            renderButtons();
+          });
+
+          $(document.body).on("click", ".pokemon", displayPokemon);
+
+          renderButtons();
+    })
+  </script>
+
 </body>
+
 </html>
