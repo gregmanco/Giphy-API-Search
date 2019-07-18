@@ -31,7 +31,7 @@
       <div class="col-lg-3 searchingPokeContainer">
 
         <div id="pokebuttons">
-          <form id="pokemon-input">
+          <form id="pokemon-input-form">
 
             <input type="text" id="pokemon-input">
             <!-- Button triggers New Pokemon to be added -->
@@ -44,111 +44,7 @@
     </div>
   </div>
 
-
-  <script>
-    $(document).ready(function () {
-
-          var pokemons = ["Electabuzz", "Squirtle", "Zapdos", "Golem", "Gengar", "Dratini", "Psyduck","Scyther"]
-
-
-
-          function displayPokemon() {
-             var pokemon = $(this).attr("data-name")
-            // Constructing a URL to search Giphy for the name of the person who said the quote
-            var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&q=" + pokemon + "&limit=10";
-
-            // Performing our AJAX GET request
-            $.ajax({
-                url: queryURL,
-                method: "GET",
-              })
-              // After the data comes back from the API
-              .then(function (response) {
-                console.log(response)
-                // $("#giftcontainer").text(JSON.stringify(response));
-                console.log(response.data[0].rating)
-                console.log(response.data[0].bitly_gif_url)
-
-                // Creating a div to hold the pokemon gif
-                var pokeGifDiV = $("<div class='pokeGif'>");
-
-                // Storing the gif rating data
-                var rating = response.data[0].rating
-
-                // Creating an element to have the rating displayed
-                var pOne = $("<p>").text("Rating: " + rating);
-
-                // Displaying the rating
-                pokeGifDiV.append(pOne);
-
-                // Retrieving the URL for the image
-               var gifURL = response.data[0].bitly_gif_url;
-
-                // Creating an element to hold the image
-                var image = $("<img>").attr("src", gifURL);
-
-                // Appending the image
-                pokeGifDiV.append(image);
-
-                // Putting the entire movie above the previous movies
-                $("#gifContainer").prepend(pokeGifDiV);
-
-
-
-
-
-
-
-
-
-         });
-       }
-
-          function renderButtons() {
-
-            // Deleting the buttons prior to adding new movies
-            // (this is necessary otherwise you will have repeat buttons)
-            $("#poke-buttons").empty();
-
-            // Loop through the pokemons array
-            for (var i = 0; i < pokemons.length; i++) {
-
-              // Generates a button for each item in the pokemon array
-
-              var j = $("<button>");
-              // Adding a pokemon class
-              j.addClass("pokemon");
-              // Adding a data-attribute
-              j.attr("data-name", pokemons[i]);
-
-              j.text(pokemons[i]);
-              
-              // Adding the buttons to the poke-buttons div
-              $("#poke-buttons").append(j);
-
-            }
-          };
-
-          // This function handles events where one button is clicked
-          $("#add-pokemon").on("click", function (event) {
-            event.preventDefault();
-
-            // This line grabs the input from the textbox
-            var pokemon = $("#pokemon-input").val().trim();
-
-            // Adding the pokemon from the textbox to our array
-            pokemons.push(pokemon);
-            console.log(pokemons);
-
-            // Calling renderButtons which handles the processing of our pokemons array
-            renderButtons();
-          });
-
-          $(document.body).on("click", ".pokemon", displayPokemon);
-
-          renderButtons();
-    })
-  </script>
+<script type="text/javascript" src="assets/javascript/giphy.js"></script>
 
 </body>
 
