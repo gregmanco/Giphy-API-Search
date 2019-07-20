@@ -1,0 +1,38 @@
+
+body {
+    background-image: url("https://www.desktop-background.com/p/2010/04/23/6699_edited-wallpapers-pokemon-backgrounds_1680x1050_h.jpg");
+}
+#gifContainer {
+    background:white;
+    background-blend-mode: luminosity;
+    opacity: .7;
+}
+.gif { 
+}
+
+h1 {
+    padding: 10px;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+p {
+    color: white;
+    font-size: 20px;
+ 
+}
+#add-pokemon {
+    background-color: white;
+    color: red;
+}
+.pokemon {
+    background-color:black;
+    float: left;
+    margin: 5px;
+    opacity: 1.0;
+}
+
+.pokemonB {
+    margin: 5px;
+    color: white;
+    background-color: red
+}

@@ -21,16 +21,17 @@
           // $("#giftcontainer").text(JSON.stringify(response));
         
           
+        $("#gifContainer").empty()
 
-
-       //  for (var i = 0; i < response.data.length; i++) {
+         for (var i = 0; i < response.data.length; i++) {
 
           // Grabbing the div with id gifContainer  and assign it pokeGifDiv variable
-            $("#gifContainer")
+        
           var pokeGifDiv = $("<div class='pokemon'>");
+        
 
           // Storing the gif rating data
-          var rating = response.data[0].rating
+          var rating = response.data[i].rating;
 
           // Creating an element to have the rating displayed
           var pOne = $("<p>").text("Rating: " + rating);
@@ -39,25 +40,39 @@
           pokeGifDiv.append(pOne);
 
           // Retrieving the URL for the image
-         var gifURL = response.data[0].images.fixed_height_still.url;
+         var gifURL = response.data[i].images.fixed_height_still.url;
 
           // Creating an element to hold the image
-          var image = $("<img>").attr({
-            "src": gifURL,
-            "data-still": gifURL,
-            "data-animate": response.data[0].images.fixed_height.url,
-            "data-state": "still",
-            "class": "animateImg"
-          });
-          // Appending the image
+          var image = $("<img>").attr("src", gifURL,)
+          image.attr("class", "gif")
+          image.attr("data-still",response.data[i].images.fixed_height_still.url)
+          image.attr("data-state", "still")
+          image.attr("data-animate", response.data[i].images.fixed_height.url)
           pokeGifDiv.append(image);
 
           // Putting the  new pokemon  gif above the previous pokemon gif
-          $("#gifcontainer").prepend(pokeGifDiv);
+          $("#gifContainer").prepend(pokeGifDiv);
 
-  //     }
+       }
    });
  }
+
+ $(document.body).on("click", ".gif", function () {
+    var state = $(this).attr("data-state");
+    if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+    } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still", );
+    }
+});
+    
+
+
+ 
+
+
 
     function renderButtons() {
 
@@ -72,7 +87,7 @@
 
         var j = $("<button>");
         // Adding a pokemon class
-        j.addClass("pokemon");
+        j.addClass("pokemonB");
         // Adding a data-attribute
         j.attr("data-name", pokemons[i]);
 
@@ -99,7 +114,7 @@
       renderButtons();
     });
 
-     $(document.body).on("click", ".pokemon", displayPokemon);
+     $(document.body).on("click", ".pokemonB", displayPokemon);
     
 
     renderButtons();
